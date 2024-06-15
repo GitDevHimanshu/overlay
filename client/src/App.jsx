@@ -12,21 +12,23 @@ function App() {
     const socketInstance = io(url2);
     setSocket(socketInstance);
 
-    socket.on('send_changes',(data)=>{
+    socketInstance.on('send_changes',(data)=>{
       setCount(data);
     })
 
     return () => {
-      if (socketInstance) socketInstance.disconnect();
+      if (socketInstance) {
+        socketInstance.off('send_changes');
+        socketInstance.disconnect();}
     };
   }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const message = "test message";
+    const message = event.target.previousSibling.value;
 
     if (socket && message) {
-      socket.emit('new-message', message);
+      socket.emit('update_change', message);
     }
   };
 
