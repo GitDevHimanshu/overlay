@@ -1,8 +1,10 @@
-const express = require('express');
+const server = require('http').createServer();
+const io = require('socket.io')(server);
 
-const app = express();
+io.on('connection', client => {
+  console.log("client connected")
+});
 
-
-app.listen(process.env.PORT || 3000, ()=>{
-    console.log('Server is running on port 3000');
-})
+server.listen(process.env.PORT || 3000, ()=>{
+    console.log("server started...")
+});
